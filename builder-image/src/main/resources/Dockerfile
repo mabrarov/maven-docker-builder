@@ -11,22 +11,11 @@ RUN ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \
       make \
       libstdc++-9-dev
 
-ENV CMAKE_DIR="/opt/cmake"
-ARG CMAKE_VERSION="3.18.2"
-RUN mkdir -p "${CMAKE_DIR}" && \
-    cmake_url="https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz" && \
-    echo "Downloading CMake ${CMAKE_VERSION} from ${cmake_url} to ${CMAKE_DIR} directory" && \
-    curl -jksSL "${cmake_url}" | tar -xzf - -C "${CMAKE_DIR}" --strip-components 1 && \
-    "${CMAKE_DIR}/bin/cmake" --version
+ADD ["cmake.tar.gz", "/opt"]
+ADD ["boost.tar.gz", "/opt"]
 
-ENV BOOST_DIR="/opt/boost"
-ARG BOOST_VERSION="1.74.0"
-ARG BOOST_URL="https://dl.bintray.com/mabrarov/generic/boost"
-
-RUN mkdir -p "${BOOST_DIR}" && \
-    boost_archive_url="${BOOST_URL}/${BOOST_VERSION}/boost-${BOOST_VERSION}-x64-gcc$(gcc -dumpversion | sed -r 's/^([[:digit:]]+)(\..*)?$/\1/;t;d').tar.gz" && \
-    echo "Downloading Boost from ${boost_archive_url}" && \
-    curl -jksSL "${boost_archive_url}" | tar -xzf - -C "${BOOST_DIR}" --strip-components 1
+ENV CMAKE_DIR="/opt/cmake-@cmake.version@-Linux-x86_64"
+ENV BOOST_DIR="/opt/boost-@boost.version@-x64-gcc9"
 
 ARG REVISION="master"
 ARG OUTPUT_FILE="/out.tar.gz"

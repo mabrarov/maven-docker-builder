@@ -1,6 +1,6 @@
 FROM gcr.io/distroless/cc-debian10
 
-ADD rootfs.tar /
+ADD ["rootfs.tar", "/"]
 
 ENTRYPOINT ["/opt/ma_echo_server/ma_echo_server"]
 

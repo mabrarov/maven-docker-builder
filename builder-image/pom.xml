@@ -18,6 +18,38 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>download-cmake</id>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <url>https://github.com/Kitware/CMake/releases/download/v${cmake.version}/cmake-${cmake.version}-Linux-x86_64.tar.gz</url>
+                            <sha256>${cmake.sha256}</sha256>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputFileName>cmake.tar.gz</outputFileName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-boost</id>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <url>https://dl.bintray.com/mabrarov/generic/boost/${boost.version}/boost-${boost.version}-x64-gcc9.tar.gz</url>
+                            <sha256>${boost.sha256}</sha256>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputFileName>boost.tar.gz</outputFileName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>

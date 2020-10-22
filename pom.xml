@@ -29,6 +29,10 @@
         <docker.verbose>true</docker.verbose>
         <docker.cleanup>none</docker.cleanup>
         <builder.image.repository>abrarov/maven-docker-builder-builder</builder.image.repository>
+        <cmake.version>3.18.4</cmake.version>
+        <cmake.sha256>149e0cee002e59e0bb84543cf3cb099f108c08390392605e944daeb6594cbc29</cmake.sha256>
+        <boost.version>1.74.0</boost.version>
+        <boost.sha256>8211e639fd443cbffed7891af9c54012848d04df340ee993bedb3ef0346347c3</boost.sha256>
     </properties>
 
     <dependencyManagement>
@@ -95,6 +99,11 @@
                         </delimiters>
                         <useDefaultDelimiters>false</useDefaultDelimiters>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.googlecode.maven-download-plugin</groupId>
+                    <artifactId>download-maven-plugin</artifactId>
+                    <version>1.6.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

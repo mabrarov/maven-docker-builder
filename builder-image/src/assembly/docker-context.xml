@@ -20,7 +20,8 @@
             <outputDirectory/>
             <directory>${project.build.directory}</directory>
             <includes>
-                <include>rootfs.tar</include>
+                <include>cmake.tar.gz</include>
+                <include>boost.tar.gz</include>
             </includes>
         </fileSet>
     </fileSets>
