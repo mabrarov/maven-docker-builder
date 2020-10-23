@@ -14,8 +14,8 @@ RUN ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \
 ADD ["cmake.tar.gz", "/opt"]
 ADD ["boost.tar.gz", "/opt"]
 
-ENV CMAKE_DIR="/opt/cmake-@cmake.version@-Linux-x86_64"
-ENV BOOST_DIR="/opt/boost-@boost.version@-x64-gcc9"
+ENV CMAKE_DIR="/opt/cmake-@cmake.version@-Linux-x86_64" \
+    BOOST_DIR="/opt/boost-@boost.version@-x64-gcc9"
 
 ARG REVISION="master"
 ARG OUTPUT_FILE="/out.tar.gz"
