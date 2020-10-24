@@ -34,7 +34,8 @@
         <boost.version>1.74.0</boost.version>
         <boost.sha256>8211e639fd443cbffed7891af9c54012848d04df340ee993bedb3ef0346347c3</boost.sha256>
         <builder.image.repository>abrarov/maven-docker-builder-builder</builder.image.repository>
-        <builder.output.file>/out.tar.gz</builder.output.file>
+        <builder.output.fileName>out.tar.gz</builder.output.fileName>
+        <builder.output.file>/${builder.output.fileName}</builder.output.file>
     </properties>
 
     <dependencyManagement>
@@ -124,7 +125,7 @@
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.33.0</version>
+                    <version>0.34-SNAPSHOT</version>
                 </plugin>
             </plugins>
         </pluginManagement>

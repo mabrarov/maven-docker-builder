@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <artifact.file>${project.build.directory}/app.tar.gz</artifact.file>
+        <artifact.file>${project.build.directory}/${builder.output.fileName}</artifact.file>
     </properties>
 
     <dependencies>
@@ -33,26 +33,20 @@
                         <id>copy-from-image</id>
                         <phase>generate-resources</phase>
                         <goals>
-                            <goal>start</goal>
-                            <goal>stop</goal>
+                            <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <imagePullPolicy>Never</imagePullPolicy>
-                            <verbose>false</verbose>
                             <images>
                                 <image>
                                     <name>${builder.image.repository}:${project.version}</name>
-                                    <run>
-                                        <containerNamePattern>%n-%t</containerNamePattern>
-                                        <autoRemove>true</autoRemove>
-                                        <wait>
-                                            <exit>0</exit>
-                                        </wait>
-                                        <log>
-                                            <prefix>%z</prefix>
-                                            <file>${artifact.file}</file>
-                                        </log>
-                                    </run>
+                                    <copy>
+                                        <entries>
+                                            <entry>
+                                                <containerPath>${builder.output.file}</containerPath>
+                                                <hostDirectory>${project.build.directory}</hostDirectory>
+                                            </entry>
+                                        </entries>
+                                    </copy>
                                 </image>
                             </images>
                         </configuration>
