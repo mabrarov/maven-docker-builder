@@ -17,12 +17,11 @@ ADD ["boost.tar.gz", "/opt"]
 ENV CMAKE_DIR="/opt/cmake-@cmake.version@-Linux-x86_64" \
     BOOST_DIR="/opt/boost-@boost.version@-x64-gcc9"
 
-ARG REVISION="master"
-ARG OUTPUT_FILE="/out.tar.gz"
-
-RUN source_dir="$(mktemp -d)" && \
+RUN revision="@app.version@" && \
+    output_file="@output.file@" && \
+    source_dir="$(mktemp -d)" && \
     git clone "https://github.com/mabrarov/asio_samples.git" "${source_dir}" && \
-    git -C "${source_dir}" checkout "${REVISION}" && \
+    git -C "${source_dir}" checkout "${revision}" && \
     build_dir="$(mktemp -d)" && \
     "${CMAKE_DIR}/bin/cmake" \
       -D CMAKE_SKIP_BUILD_RPATH=ON \
@@ -36,12 +35,12 @@ RUN source_dir="$(mktemp -d)" && \
       -S "${source_dir}" \
       -B "${build_dir}" && \
     "${CMAKE_DIR}/bin/cmake" --build "${build_dir}" --target ma_echo_server && \
-    mkdir -p "$(dirname "${OUTPUT_FILE}")" && \
-    tar -C "${build_dir}/examples/ma_echo_server" -czf "${OUTPUT_FILE}" ma_echo_server && \
+    mkdir -p "$(dirname "${output_file}")" && \
+    tar -C "${build_dir}/examples/ma_echo_server" -czf "${output_file}" ma_echo_server && \
     rm -rf "${build_dir}" && \
     rm -rf "${source_dir}"
 
-CMD ["/usr/bin/cat", "/out.tar.gz"]
+CMD ["/usr/bin/cat", "@output.file@"]
 
 LABEL name="@docker.repository@" \
     version="@project.version@" \

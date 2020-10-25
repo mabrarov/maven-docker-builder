@@ -13,6 +13,7 @@
 
     <properties>
         <docker.repository>${builder.image.repository}</docker.repository>
+        <output.file>${builder.output.file}</output.file>
     </properties>
 
     <build>

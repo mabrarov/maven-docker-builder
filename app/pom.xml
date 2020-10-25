@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <app.file>${project.build.directory}/out.tar.gz</app.file>
+        <artifact.file>${project.build.directory}/app.tar.gz</artifact.file>
     </properties>
 
     <dependencies>
@@ -40,7 +40,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-app-from-container</id>
+                        <id>copy-from-image</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>run</goal>
@@ -51,7 +51,7 @@
                                     <arg value="run"/>
                                     <arg value="--rm"/>
                                     <arg value="${builder.image.repository}:${project.version}"/>
-                                    <redirector output="${app.file}" logError="true" binaryOutput="true"
+                                    <redirector output="${artifact.file}" logError="true" binaryOutput="true"
                                                 createemptyfiles="false"/>
                                 </exec>
                             </target>
@@ -64,7 +64,7 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>attach-artifacts</id>
+                        <id>attach-artifact</id>
                         <phase>package</phase>
                         <goals>
                             <goal>attach-artifact</goal>
@@ -72,7 +72,7 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${app.file}</file>
+                                    <file>${artifact.file}</file>
                                     <type>tar.gz</type>
                                 </artifact>
                             </artifacts>
