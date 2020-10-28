@@ -14,7 +14,7 @@ RUN ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \
 ADD ["cmake.tar.gz", "/opt"]
 ADD ["boost.tar.gz", "/opt"]
 
-ENV CMAKE_DIR="/opt/cmake-@cmake.version@-Linux-x86_64" \
+ENV PATH="/opt/cmake-@cmake.version@-Linux-x86_64/bin:${PATH}" \
     BOOST_DIR="/opt/boost-@boost.version@-x64-gcc9"
 
 RUN revision="@app.version@" && \
@@ -23,7 +23,7 @@ RUN revision="@app.version@" && \
     git clone "https://github.com/mabrarov/asio_samples.git" "${source_dir}" && \
     git -C "${source_dir}" checkout "${revision}" && \
     build_dir="$(mktemp -d)" && \
-    "${CMAKE_DIR}/bin/cmake" \
+    cmake \
       -D CMAKE_SKIP_BUILD_RPATH=ON \
       -D CMAKE_BUILD_TYPE=RELEASE \
       -D Boost_USE_STATIC_LIBS=ON \
@@ -34,7 +34,7 @@ RUN revision="@app.version@" && \
       -D MA_QT=OFF \
       -S "${source_dir}" \
       -B "${build_dir}" && \
-    "${CMAKE_DIR}/bin/cmake" --build "${build_dir}" --target ma_echo_server && \
+    cmake --build "${build_dir}" --target ma_echo_server && \
     mkdir -p "$(dirname "${output_file}")" && \
     tar -C "${build_dir}/examples/ma_echo_server" -czf "${output_file}" ma_echo_server && \
     rm -rf "${build_dir}" && \
