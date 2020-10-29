@@ -12,10 +12,10 @@ RUN ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \
       libstdc++-9-dev
 
 ADD ["cmake.tar.gz", "/opt"]
-ADD ["boost.tar.gz", "/opt"]
+ADD ["boost.tar.gz", "/usr/local/lib"]
 
 ENV PATH="/opt/cmake-@cmake.version@-Linux-x86_64/bin:${PATH}" \
-    BOOST_DIR="/opt/boost-@boost.version@-x64-gcc9"
+    BOOST_HOME="/usr/local/lib/boost-@boost.version@-x64-gcc9"
 
 RUN revision="@app.version@" && \
     output_file="@output.file@" && \
@@ -28,8 +28,8 @@ RUN revision="@app.version@" && \
       -D CMAKE_BUILD_TYPE=RELEASE \
       -D Boost_USE_STATIC_LIBS=ON \
       -D Boost_NO_SYSTEM_PATHS=ON \
-      -D BOOST_INCLUDEDIR="${BOOST_DIR}/include" \
-      -D BOOST_LIBRARYDIR="${BOOST_DIR}/lib" \
+      -D BOOST_INCLUDEDIR="${BOOST_HOME}/include" \
+      -D BOOST_LIBRARYDIR="${BOOST_HOME}/lib" \
       -D MA_TESTS=OFF \
       -D MA_QT=OFF \
       -S "${source_dir}" \
