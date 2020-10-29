@@ -1,6 +1,6 @@
 # Maven Docker Builder
 
-Implementation of Docker builder image approach with Apache Maven.
+Docker builder pattern with Apache Maven.
 
 ## Building
 
