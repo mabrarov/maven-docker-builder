@@ -33,12 +33,23 @@
                         <id>copy-from-image</id>
                         <phase>generate-resources</phase>
                         <goals>
+                            <goal>start</goal>
                             <goal>copy</goal>
+                            <goal>stop</goal>
                         </goals>
                         <configuration>
+                            <verbose>false</verbose>
                             <images>
                                 <image>
                                     <name>${builder.image.repository}:${project.version}</name>
+                                    <run>
+                                        <log>
+                                            <enabled>false</enabled>
+                                        </log>
+                                        <wait>
+                                            <exit>0</exit>
+                                        </wait>
+                                    </run>
                                     <copy>
                                         <entries>
                                             <entry>
@@ -49,7 +60,6 @@
                                     </copy>
                                 </image>
                             </images>
-                            <createContainers>true</createContainers>
                         </configuration>
                     </execution>
                 </executions>
