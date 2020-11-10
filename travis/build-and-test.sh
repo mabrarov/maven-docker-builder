@@ -25,6 +25,10 @@ build_maven_project() {
   build_cmd="$(maven_runner)$(maven_settings)$(maven_project_file)"
   build_cmd="${build_cmd:+${build_cmd} }--batch-mode"
 
+  if [[ "${DOCKER_MAVEN_PLUGIN_VERSION}" != "" ]]; then
+    build_cmd="${build_cmd:+${build_cmd} }--define docker-maven-plugin.version=$(printf "%q" "${DOCKER_MAVEN_PLUGIN_VERSION}")"
+  fi
+
   if [[ "${DOCKERHUB_USER}" != "" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define docker.image.registry=$(printf "%q" "${DOCKERHUB_USER}")"
   fi
