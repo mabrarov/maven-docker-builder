@@ -17,14 +17,13 @@ maven_settings() {
   fi
 }
 
-build_maven_project() {
-  build_cmd="$(maven_runner)$(maven_settings)"
-  build_cmd="${build_cmd:+${build_cmd} }--file $(printf "%q" "${TRAVIS_BUILD_DIR}/pom.xml")"
-  build_cmd="${build_cmd:+${build_cmd} }--batch-mode"
+maven_project_file() {
+  printf " %s %q" "--file" "${TRAVIS_BUILD_DIR}/pom.xml"
+}
 
-  if [[ "${DOCKER_MAVEN_PLUGIN_VERSION}" != "" ]]; then
-    build_cmd="${build_cmd:+${build_cmd} }--define docker-maven-plugin.version=$(printf "%q" "${DOCKER_MAVEN_PLUGIN_VERSION}")"
-  fi
+build_maven_project() {
+  build_cmd="$(maven_runner)$(maven_settings)$(maven_project_file)"
+  build_cmd="${build_cmd:+${build_cmd} }--batch-mode"
 
   if [[ "${DOCKERHUB_USER}" != "" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define docker.image.registry=$(printf "%q" "${DOCKERHUB_USER}")"
@@ -59,8 +58,7 @@ build_maven_project() {
 }
 
 test_images() {
-  project_version_cmd="$(maven_runner)$(maven_settings)"
-  project_version_cmd="${project_version_cmd:+${project_version_cmd} }--file $(printf "%q" "${TRAVIS_BUILD_DIR}/pom.xml")"
+  project_version_cmd="$(maven_runner)$(maven_settings)$(maven_project_file)"
   project_version_cmd="${project_version_cmd:+${project_version_cmd} }--batch-mode --non-recursive"
   project_version_cmd="${project_version_cmd:+${project_version_cmd} }--define expression=project.version"
   project_version_cmd="${project_version_cmd:+${project_version_cmd} }org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate"
