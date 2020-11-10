@@ -1,6 +1,9 @@
 # Maven Docker Builder
 
-Docker builder pattern with Apache Maven.
+[![License](https://img.shields.io/github/license/mabrarov/maven-docker-builder)](https://github.com/mabrarov/maven-docker-builder/tree/master/LICENSE)
+[![Travis CI build status](https://travis-ci.com/mabrarov/maven-docker-builder.svg?branch=master)](https://travis-ci.com/github/mabrarov/maven-docker-builder)
+
+Docker [builder pattern](https://docs.docker.com/develop/develop-images/multistage-build/) implemented with Apache Maven.
 
 ## Building
 

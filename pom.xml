@@ -18,6 +18,15 @@
     </modules>
 
     <properties>
+        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
+        <git-commit-id-plugin.version>4.0.2</git-commit-id-plugin.version>
+        <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
+        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <download-maven-plugin.version>1.6.0</download-maven-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <docker-maven-plugin.version>0.34.1</docker-maven-plugin.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <resource.delimiter>@</resource.delimiter>
@@ -28,12 +37,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <docker.verbose>true</docker.verbose>
         <docker.cleanup>none</docker.cleanup>
+
         <app.version>master</app.version>
         <cmake.version>3.18.4</cmake.version>
         <cmake.sha256>149e0cee002e59e0bb84543cf3cb099f108c08390392605e944daeb6594cbc29</cmake.sha256>
         <boost.version>1.74.0</boost.version>
         <boost.sha256>8211e639fd443cbffed7891af9c54012848d04df340ee993bedb3ef0346347c3</boost.sha256>
-        <builder.image.repository>abrarov/maven-docker-builder-builder</builder.image.repository>
+
+        <docker.image.registry>abrarov</docker.image.registry>
+        <builder.image.repository>${docker.image.registry}/maven-docker-builder-builder</builder.image.repository>
         <builder.output.fileName>out.tar.gz</builder.output.fileName>
         <builder.output.file>/${builder.output.fileName}</builder.output.file>
     </properties>
@@ -61,12 +73,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>${maven-enforcer-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
-                    <version>4.0.2</version>
+                    <version>${git-commit-id-plugin.version}</version>
                     <configuration>
                         <verbose>false</verbose>
                         <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
@@ -85,17 +97,17 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${build-helper-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>${maven-dependency-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven-resources-plugin.version}</version>
                     <configuration>
                         <delimiters>
                             <delimiter>${resource.delimiter}</delimiter>
@@ -106,12 +118,12 @@
                 <plugin>
                     <groupId>com.googlecode.maven-download-plugin</groupId>
                     <artifactId>download-maven-plugin</artifactId>
-                    <version>1.6.0</version>
+                    <version>${download-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${maven-assembly-plugin.version}</version>
                     <configuration>
                         <delimiters>
                             <delimiter>${resource.delimiter}</delimiter>
@@ -125,7 +137,7 @@
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.34-SNAPSHOT</version>
+                    <version>${docker-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
