@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <docker.repository>abrarov/maven-docker-builder-app</docker.repository>
+        <docker.repository>${docker.image.registry}/maven-docker-builder-app</docker.repository>
     </properties>
 
     <dependencies>
