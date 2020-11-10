@@ -2,19 +2,27 @@
 
 set -e
 
-build_maven_project() {
+maven_runner() {
   if [[ "${MAVEN_WRAPPER}" -ne 0 ]]; then
-    build_cmd="${build_cmd:+${build_cmd} }$(printf "%q" "${TRAVIS_BUILD_DIR}/mvnw")"
+    printf "%q" "${TRAVIS_BUILD_DIR}/mvnw"
   else
-    build_cmd="${build_cmd:+${build_cmd} }mvn"
+    echo "mvn"
   fi
+}
 
+maven_settings() {
   maven_settings_file="${TRAVIS_BUILD_DIR}/travis/settings.xml"
   if [[ -f "${maven_settings_file}" ]]; then
-    build_cmd="${build_cmd:+${build_cmd} }--settings $(printf "%q" "${maven_settings_file}")"
+    printf " %s %q" "--settings" "${maven_settings_file}"
   fi
+}
 
-  build_cmd="${build_cmd:+${build_cmd} }--file $(printf "%q" "${TRAVIS_BUILD_DIR}/pom.xml")"
+maven_project_file() {
+  printf " %s %q" "--file" "${TRAVIS_BUILD_DIR}/pom.xml"
+}
+
+build_maven_project() {
+  build_cmd="$(maven_runner)$(maven_settings)$(maven_project_file)"
   build_cmd="${build_cmd:+${build_cmd} }--batch-mode"
 
   if [[ "${DOCKERHUB_USER}" != "" ]]; then
@@ -50,16 +58,7 @@ build_maven_project() {
 }
 
 test_images() {
-  if [[ "${MAVEN_WRAPPER}" -ne 0 ]]; then
-    project_version_cmd="${project_version_cmd:+${project_version_cmd} }$(printf "%q" "${TRAVIS_BUILD_DIR}/mvnw")"
-  else
-    project_version_cmd="${project_version_cmd:+${project_version_cmd} }mvn"
-  fi
-  maven_settings_file="${TRAVIS_BUILD_DIR}/travis/settings.xml"
-  if [[ -f "${maven_settings_file}" ]]; then
-    project_version_cmd="${project_version_cmd:+${project_version_cmd} }--settings $(printf "%q" "${maven_settings_file}")"
-  fi
-  project_version_cmd="${project_version_cmd:+${project_version_cmd} }--file $(printf "%q" "${TRAVIS_BUILD_DIR}/pom.xml")"
+  project_version_cmd="$(maven_runner)$(maven_settings)$(maven_project_file)"
   project_version_cmd="${project_version_cmd:+${project_version_cmd} }--batch-mode --non-recursive"
   project_version_cmd="${project_version_cmd:+${project_version_cmd} }--define expression=project.version"
   project_version_cmd="${project_version_cmd:+${project_version_cmd} }org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate"
