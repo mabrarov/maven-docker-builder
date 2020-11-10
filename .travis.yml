@@ -16,7 +16,6 @@ env:
     - BOOST_SHA256: '8211e639fd443cbffed7891af9c54012848d04df340ee993bedb3ef0346347c3'
     - DOCKERHUB_USER: 'abrarov'
     - MAVEN_WRAPPER: '0'
-    - DOCKER_PUSH_RETRIES: '10'
     - DOCKER_MAVEN_PLUGIN_VERSION: '0.34-dev'
 
 matrix:
@@ -29,7 +28,7 @@ matrix:
       jdk: 'openjdk8'
       env:
         - MAVEN_WRAPPER: '1'
-    # OpenJDK 11 with Maven Wrapper
+    # OpenJDK 11
     - dist: 'bionic'
       jdk: 'openjdk11'
 
