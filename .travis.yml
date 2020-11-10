@@ -1,0 +1,37 @@
+language: 'java'
+
+cache:
+  directories:
+    - '${HOME}/.m2/repository'
+
+services:
+  - 'docker'
+
+env:
+  global:
+    - APP_VERSION: 'master'
+    - CMAKE_VERSION: '3.18.4'
+    - CMAKE_SHA256: '149e0cee002e59e0bb84543cf3cb099f108c08390392605e944daeb6594cbc29'
+    - BOOST_VERSION: '1.74.0'
+    - BOOST_SHA256: '8211e639fd443cbffed7891af9c54012848d04df340ee993bedb3ef0346347c3'
+    - DOCKERHUB_USER: 'abrarov'
+    - MAVEN_WRAPPER: '0'
+    - DOCKER_PUSH_RETRIES: '10'
+
+matrix:
+  include:
+    # OpenJDK 8
+    - dist: 'trusty'
+      jdk: 'openjdk8'
+    # OpenJDK 8 with Maven Wrapper
+    - dist: 'trusty'
+      jdk: 'openjdk8'
+      env:
+        - MAVEN_WRAPPER: '1'
+    # OpenJDK 11 with Maven Wrapper
+    - dist: 'bionic'
+      jdk: 'openjdk11'
+
+install: 'skip'
+
+script: 'bash travis/build-and-test.sh'
