@@ -50,13 +50,20 @@ build_maven_project() {
 }
 
 test_images() {
-  maven_project_version="$(mvn \
-    --file "${TRAVIS_BUILD_DIR}/pom.xml" \
-    --batch-mode \
-    --non-recursive \
-    --define expression=project.version \
-    org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate \
-    | sed -n -e '/^\[.*\]/ !{ /^[0-9]/ { p; q } }')"
+  if [[ "${MAVEN_WRAPPER}" -ne 0 ]]; then
+    project_version_cmd="${project_version_cmd:+${project_version_cmd} }$(printf "%q" "${TRAVIS_BUILD_DIR}/mvnw")"
+  else
+    project_version_cmd="${project_version_cmd:+${project_version_cmd} }mvn"
+  fi
+  maven_settings_file="${TRAVIS_BUILD_DIR}/travis/settings.xml"
+  if [[ -f "${maven_settings_file}" ]]; then
+    project_version_cmd="${project_version_cmd:+${project_version_cmd} }--settings $(printf "%q" "${maven_settings_file}")"
+  fi
+  project_version_cmd="${project_version_cmd:+${project_version_cmd} }--file $(printf "%q" "${TRAVIS_BUILD_DIR}/pom.xml")"
+  project_version_cmd="${project_version_cmd:+${project_version_cmd} }--batch-mode --non-recursive"
+  project_version_cmd="${project_version_cmd:+${project_version_cmd} }--define expression=project.version"
+  project_version_cmd="${project_version_cmd:+${project_version_cmd} }org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate"
+  maven_project_version="$(eval "${project_version_cmd}" | sed -n -e '/^\[.*\]/ !{ /^[0-9]/ { p; q } }')"
 
   image_name="${DOCKERHUB_USER}/maven-docker-builder-app:${maven_project_version}"
   echo "Running container created from ${image_name} image"
