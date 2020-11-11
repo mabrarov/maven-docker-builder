@@ -21,7 +21,6 @@
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <git-commit-id-plugin.version>4.0.2</git-commit-id-plugin.version>
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
-        <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <download-maven-plugin.version>1.6.0</download-maven-plugin.version>
@@ -47,7 +46,8 @@
 
         <docker.image.registry>abrarov</docker.image.registry>
         <builder.image.repository>${docker.image.registry}/maven-docker-builder-builder</builder.image.repository>
-        <builder.output.file>/out.tar.gz</builder.output.file>
+        <builder.output.fileName>out.tar.gz</builder.output.fileName>
+        <builder.output.file>/${builder.output.fileName}</builder.output.file>
     </properties>
 
     <dependencyManagement>
@@ -98,11 +98,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>${build-helper-maven-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>${maven-antrun-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

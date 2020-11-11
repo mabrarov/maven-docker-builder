@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <artifact.file>${project.build.directory}/app.tar.gz</artifact.file>
+        <artifact.file>${project.build.directory}/${builder.output.fileName}</artifact.file>
     </properties>
 
     <dependencies>
@@ -26,35 +26,30 @@
     <build>
         <plugins>
             <plugin>
-                <!--
-                    There is no way to copy file from image, i.e. to
-
-                    1. create temporary non-running container
-                    2. copy file from that container
-                    3. remove temporary container
-
-                    with io.fabric8:docker-maven-plugin plugin at the moment.
-                    Refer to https://github.com/fabric8io/docker-maven-plugin/issues/752.
-                -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy-from-image</id>
                         <phase>generate-resources</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <target>
-                                <exec executable="docker" failonerror="true">
-                                    <arg value="run"/>
-                                    <arg value="--rm"/>
-                                    <arg value="${builder.image.repository}:${project.version}"/>
-                                    <redirector output="${artifact.file}" logError="true" binaryOutput="true"
-                                                createemptyfiles="false"/>
-                                </exec>
-                            </target>
+                            <images>
+                                <image>
+                                    <name>${builder.image.repository}:${project.version}</name>
+                                    <copy>
+                                        <entries>
+                                            <entry>
+                                                <containerPath>${builder.output.file}</containerPath>
+                                                <hostDirectory>${project.build.directory}</hostDirectory>
+                                            </entry>
+                                        </entries>
+                                    </copy>
+                                </image>
+                            </images>
+                            <createContainers>true</createContainers>
                         </configuration>
                     </execution>
                 </executions>
