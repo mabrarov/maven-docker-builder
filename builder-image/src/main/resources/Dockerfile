@@ -36,7 +36,7 @@ RUN revision="@app.version@" && \
       -B "${build_dir}" && \
     cmake --build "${build_dir}" --target ma_echo_server && \
     mkdir -p "$(dirname "${output_file}")" && \
-    tar --sort=name --owner=0:0 --group=0:0 --mtime='UTC 1970-01-01' \
+    tar --sort=name --owner=root:0 --group=root:0 --mtime='UTC 1970-01-01' \
       -C "${build_dir}/examples/ma_echo_server" -czf "${output_file}" ma_echo_server && \
     rm -rf "${build_dir}" && \
     rm -rf "${source_dir}" && \
