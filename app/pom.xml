@@ -43,8 +43,6 @@
                                 <image>
                                     <name>${builder.image.repository}:${project.version}</name>
                                     <run>
-                                        <containerNamePattern>%n-%t</containerNamePattern>
-                                        <autoRemove>true</autoRemove>
                                         <wait>
                                             <exit>0</exit>
                                         </wait>
