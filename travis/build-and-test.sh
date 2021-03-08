@@ -22,7 +22,7 @@ maven_project_file() {
 }
 
 docker_maven_plugin_version() {
-  if [[ "${DOCKER_MAVEN_PLUGIN_VERSION}" != "" ]]; then
+  if [[ -n "${DOCKER_MAVEN_PLUGIN_VERSION}" ]]; then
     printf " %s%q" "--define docker-maven-plugin.version=" "${DOCKER_MAVEN_PLUGIN_VERSION}"
   fi
 }
@@ -31,27 +31,27 @@ build_maven_project() {
   build_cmd="$(maven_runner)$(maven_settings)$(maven_project_file)$(docker_maven_plugin_version)"
   build_cmd="${build_cmd:+${build_cmd} }--batch-mode"
 
-  if [[ "${DOCKERHUB_USER}" != "" ]]; then
+  if [[ -n "${DOCKERHUB_USER}" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define docker.image.registry=$(printf "%q" "${DOCKERHUB_USER}")"
   fi
 
-  if [[ "${APP_VERSION}" != "" ]]; then
+  if [[ -n "${APP_VERSION}" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define app.version=$(printf "%q" "${APP_VERSION}")"
   fi
 
-  if [[ "${CMAKE_VERSION}" != "" ]]; then
+  if [[ -n "${CMAKE_VERSION}" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define cmake.version=$(printf "%q" "${CMAKE_VERSION}")"
   fi
 
-  if [[ "${CMAKE_SHA256}" != "" ]]; then
+  if [[ -n "${CMAKE_SHA256}" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define cmake.sha256=$(printf "%q" "${CMAKE_SHA256}")"
   fi
 
-  if [[ "${BOOST_VERSION}" != "" ]]; then
+  if [[ -n "${BOOST_VERSION}" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define boost.version=$(printf "%q" "${BOOST_VERSION}")"
   fi
 
-  if [[ "${BOOST_SHA256}" != "" ]]; then
+  if [[ -n "${BOOST_SHA256}" ]]; then
     build_cmd="${build_cmd:+${build_cmd} }--define boost.sha256=$(printf "%q" "${BOOST_SHA256}")"
   fi
 
